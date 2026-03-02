@@ -28,10 +28,64 @@ LANDSAT_COLLECTION = "landsat-c2-l2"
 MAX_CLOUD_COVER = 30
 THERMAL_BAND = "lwir11"
 
+# Visible bands for clarity estimation
+BLUE_BAND = "blue"    # B2 (482nm)
+GREEN_BAND = "green"  # B3 (562nm)
+RED_BAND = "red"      # B4 (655nm)
+
 # Landsat Collection 2 Level-2 scaling for Surface Temperature
 # DN * 0.00341802 + 149.0 = Kelvin
 SCALE_FACTOR = 0.00341802
 OFFSET = 149.0
+
+# Landsat Collection 2 Level-2 scaling for Surface Reflectance
+# DN * 0.0000275 - 0.2 = reflectance
+SR_SCALE = 0.0000275
+SR_OFFSET = -0.2
+
+
+def calculate_secchi_depth(blue: np.ndarray, green: np.ndarray) -> np.ndarray:
+    """
+    Estimate Secchi disk depth (water clarity) from blue/green band ratio.
+    
+    Uses empirical algorithm based on Olmanson et al. (2008) and others.
+    Secchi Depth (m) = exp(a + b * ln(Blue/Green))
+    
+    Coefficients are approximate - would need local calibration for accuracy.
+    """
+    # Avoid division by zero
+    green_safe = np.where(green > 0, green, np.nan)
+    ratio = blue / green_safe
+    
+    # Empirical coefficients (approximate for temperate lakes)
+    # These would ideally be calibrated with in-situ measurements
+    a = 1.5  # intercept
+    b = 2.5  # slope
+    
+    # Calculate Secchi depth in meters
+    secchi = np.exp(a + b * np.log(ratio))
+    
+    # Clip to reasonable range (0.1 to 15 meters)
+    secchi = np.clip(secchi, 0.1, 15.0)
+    
+    return secchi
+
+
+def calculate_turbidity(red: np.ndarray) -> np.ndarray:
+    """
+    Estimate turbidity (NTU) from red band reflectance.
+    
+    Higher red reflectance = more suspended particles = higher turbidity.
+    Uses simplified linear relationship.
+    """
+    # Empirical relationship (approximate)
+    # Turbidity (NTU) ≈ red_reflectance * scale
+    turbidity = red * 500  # Approximate scaling
+    
+    # Clip to reasonable range
+    turbidity = np.clip(turbidity, 0, 100)
+    
+    return turbidity
 
 
 class LakeTempPipeline:
@@ -42,10 +96,12 @@ class LakeTempPipeline:
         lakes_dir: str = "data/lakes",
         rasters_dir: str = "data/rasters",
         metadata_file: str = "data/raster_metadata.json",
+        include_clarity: bool = False,
     ):
         self.lakes_dir = Path(lakes_dir)
         self.rasters_dir = Path(rasters_dir)
         self.metadata_file = Path(metadata_file)
+        self.include_clarity = include_clarity
         
         # Create directories
         self.rasters_dir.mkdir(parents=True, exist_ok=True)
@@ -103,6 +159,7 @@ class LakeTempPipeline:
     ) -> Optional[dict]:
         """
         Process a single Landsat scene: clip to lake and convert to temperature.
+        Optionally also generates water clarity raster.
         
         Returns metadata dict if successful, None if failed.
         """
@@ -112,6 +169,7 @@ class LakeTempPipeline:
         # Create output filename
         safe_lake_name = lake_name.lower().replace(" ", "_")
         output_file = output_dir / f"{safe_lake_name}_{scene_date}.tif"
+        clarity_file = output_dir / f"{safe_lake_name}_{scene_date}_clarity.tif"
         
         # Skip if already processed
         if output_file.exists():
@@ -178,9 +236,21 @@ class LakeTempPipeline:
                 "processed_at": datetime.now().isoformat(),
             }
             
+            # Process clarity if enabled
+            if self.include_clarity:
+                try:
+                    clarity_meta = self._process_clarity(
+                        item, lake_proj, scene_date, scene_id, clarity_file
+                    )
+                    if clarity_meta:
+                        metadata.update(clarity_meta)
+                except Exception as e:
+                    logger.warning(f"  Clarity processing failed: {str(e)[:50]}")
+            
             logger.info(
                 f"  ✓ {scene_date}: {metadata['temp_mean_c']:.1f}°C "
                 f"(range: {metadata['temp_min_c']:.1f} - {metadata['temp_max_c']:.1f})"
+                + (f" | Secchi: {metadata.get('secchi_mean_m', 'N/A')}m" if self.include_clarity and 'secchi_mean_m' in metadata else "")
             )
             
             return metadata
@@ -188,6 +258,68 @@ class LakeTempPipeline:
         except Exception as e:
             logger.error(f"  ✗ {scene_id}: {str(e)[:50]}")
             return None
+    
+    def _process_clarity(
+        self,
+        item,
+        lake_proj: gpd.GeoDataFrame,
+        scene_date: str,
+        scene_id: str,
+        output_file: Path,
+    ) -> Optional[dict]:
+        """
+        Process water clarity (Secchi depth) from visible bands.
+        
+        Returns metadata dict with clarity stats.
+        """
+        # Load blue and green bands
+        blue = rioxarray.open_rasterio(item.assets[BLUE_BAND].href)
+        green = rioxarray.open_rasterio(item.assets[GREEN_BAND].href)
+        
+        # Clip to lake
+        blue_clipped = blue.rio.clip(lake_proj.geometry, lake_proj.crs, drop=True)
+        green_clipped = green.rio.clip(lake_proj.geometry, lake_proj.crs, drop=True)
+        
+        # Convert to surface reflectance
+        blue_sr = blue_clipped.astype(np.float32) * SR_SCALE + SR_OFFSET
+        green_sr = green_clipped.astype(np.float32) * SR_SCALE + SR_OFFSET
+        
+        # Mask negative reflectance (invalid/cloud shadow)
+        blue_sr = blue_sr.where(blue_sr > 0, other=np.nan)
+        green_sr = green_sr.where(green_sr > 0, other=np.nan)
+        
+        # Calculate Secchi depth
+        secchi = calculate_secchi_depth(blue_sr.values, green_sr.values)
+        
+        # Create xarray with same coordinates as blue band
+        secchi_da = blue_clipped.copy(data=secchi)
+        secchi_da.attrs["units"] = "meters"
+        secchi_da.attrs["long_name"] = "Estimated Secchi Disk Depth"
+        secchi_da.attrs["source"] = scene_id
+        secchi_da.attrs["date"] = scene_date
+        secchi_da.rio.write_nodata(np.nan, inplace=True)
+        
+        # Save clarity raster
+        secchi_da.rio.to_raster(
+            output_file,
+            driver="GTiff",
+            compress="LZW",
+            tiled=True,
+        )
+        
+        # Calculate stats
+        valid_secchi = secchi[~np.isnan(secchi)]
+        
+        if len(valid_secchi) < 100:
+            return None
+        
+        return {
+            "clarity_file": str(output_file),
+            "secchi_min_m": float(np.nanmin(valid_secchi)),
+            "secchi_max_m": float(np.nanmax(valid_secchi)),
+            "secchi_mean_m": round(float(np.nanmean(valid_secchi)), 2),
+            "secchi_std_m": round(float(np.nanstd(valid_secchi)), 2),
+        }
     
     def process_lake(
         self,
@@ -318,6 +450,8 @@ def main():
     parser.add_argument("--max-scenes", type=int, default=50, help="Max scenes per lake")
     parser.add_argument("--start-date", help="Start date (YYYY-MM-DD)")
     parser.add_argument("--end-date", help="End date (YYYY-MM-DD), default: today")
+    parser.add_argument("--include-clarity", action="store_true", 
+                        help="Also generate water clarity (Secchi depth) rasters")
     
     args = parser.parse_args()
     
@@ -332,6 +466,7 @@ def main():
     pipeline = LakeTempPipeline(
         lakes_dir=args.lakes_dir,
         rasters_dir=args.rasters_dir,
+        include_clarity=args.include_clarity,
     )
     pipeline.run(start_date=start_date, end_date=end_date, max_scenes_per_lake=args.max_scenes)
 
