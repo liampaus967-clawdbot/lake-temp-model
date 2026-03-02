@@ -8,11 +8,9 @@ venv/
 env/
 .env
 
-# Data
+# Data (raw only - processed/rasters are committed for testing)
 data/raw/*
 !data/raw/.gitkeep
-data/processed/*
-!data/processed/.gitkeep
 
 # Models
 models/*

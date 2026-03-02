@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "lake_memphremagog",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "bbox_west": -72.1833261, "bbox_south": 44.9939236, "bbox_east": -72.1832261, "bbox_north": 44.9940236, "place_id": 339013925, "osm_type": "node", "osm_id": 6712450478, "lat": 44.9939736, "lon": -72.1832761, "class": "tourism", "type": "picnic_site", "place_rank": 30, "importance": 4.8025482566521975e-05, "addresstype": "tourism", "name": "Lake Memphremagog Buffers", "display_name": "Lake Memphremagog Buffers, Newport Bike Path and Beebe Spur Rail Trail, Lindsay Beach, Derby, Orleans County, Vermont, 05855, United States" }, "geometry": { "type": "Point", "coordinates": [ -72.1832761, 44.9939736 ] } }
+]
+}
