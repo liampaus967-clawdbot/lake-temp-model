@@ -193,7 +193,8 @@ class LakeTempPipeline:
         self,
         lake_name: str,
         lake_polygon: gpd.GeoDataFrame,
-        days_back: int = 365,
+        start_date: datetime = None,
+        end_date: datetime = None,
         max_scenes: int = 50,
     ) -> list[dict]:
         """Process all available scenes for a single lake."""
@@ -203,9 +204,11 @@ class LakeTempPipeline:
         bounds = lake_polygon.total_bounds
         bbox = [bounds[0], bounds[1], bounds[2], bounds[3]]
         
-        # Date range
-        end_date = datetime.now()
-        start_date = end_date - timedelta(days=days_back)
+        # Default date range if not provided
+        if end_date is None:
+            end_date = datetime.now()
+        if start_date is None:
+            start_date = end_date - timedelta(days=365)
         
         # Create lake-specific output directory
         safe_lake_name = lake_name.lower().replace(" ", "_")
@@ -239,10 +242,23 @@ class LakeTempPipeline:
         
         return results
     
-    def run(self, days_back: int = 365, max_scenes_per_lake: int = 50):
+    def run(
+        self,
+        start_date: datetime = None,
+        end_date: datetime = None,
+        days_back: int = 365,
+        max_scenes_per_lake: int = 50,
+    ):
         """Run the pipeline for all lakes."""
+        # Handle date range
+        if end_date is None:
+            end_date = datetime.now()
+        if start_date is None:
+            start_date = end_date - timedelta(days=days_back)
+        
         logger.info("=" * 60)
         logger.info("Lake Temperature Raster Pipeline")
+        logger.info(f"Date range: {start_date.date()} to {end_date.date()}")
         logger.info("=" * 60)
         
         # Load lake polygons
@@ -257,7 +273,11 @@ class LakeTempPipeline:
         # Process each lake
         total_processed = 0
         for lake_name, lake_polygon in lakes.items():
-            results = self.process_lake(lake_name, lake_polygon, days_back, max_scenes_per_lake)
+            results = self.process_lake(
+                lake_name, lake_polygon,
+                start_date=start_date, end_date=end_date,
+                max_scenes=max_scenes_per_lake
+            )
             total_processed += len(results)
         
         # Save metadata
@@ -294,16 +314,26 @@ def main():
     parser = argparse.ArgumentParser(description="Lake Temperature Raster Pipeline")
     parser.add_argument("--lakes-dir", default="data/lakes", help="Directory with lake polygons")
     parser.add_argument("--rasters-dir", default="data/rasters", help="Output directory for rasters")
-    parser.add_argument("--days", type=int, default=365, help="Days of history to fetch")
+    parser.add_argument("--days", type=int, default=365, help="Days of history to fetch (from end-date)")
     parser.add_argument("--max-scenes", type=int, default=50, help="Max scenes per lake")
+    parser.add_argument("--start-date", help="Start date (YYYY-MM-DD)")
+    parser.add_argument("--end-date", help="End date (YYYY-MM-DD), default: today")
     
     args = parser.parse_args()
+    
+    # Parse dates
+    end_date = datetime.strptime(args.end_date, "%Y-%m-%d") if args.end_date else datetime.now()
+    
+    if args.start_date:
+        start_date = datetime.strptime(args.start_date, "%Y-%m-%d")
+    else:
+        start_date = end_date - timedelta(days=args.days)
     
     pipeline = LakeTempPipeline(
         lakes_dir=args.lakes_dir,
         rasters_dir=args.rasters_dir,
     )
-    pipeline.run(days_back=args.days, max_scenes_per_lake=args.max_scenes)
+    pipeline.run(start_date=start_date, end_date=end_date, max_scenes_per_lake=args.max_scenes)
 
 
 if __name__ == "__main__":
