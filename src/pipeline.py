@@ -97,11 +97,15 @@ class LakeTempPipeline:
         rasters_dir: str = "data/rasters",
         metadata_file: str = "data/raster_metadata.json",
         include_clarity: bool = False,
+        save_context: bool = False,
+        context_buffer_km: float = 5.0,
     ):
         self.lakes_dir = Path(lakes_dir)
         self.rasters_dir = Path(rasters_dir)
         self.metadata_file = Path(metadata_file)
         self.include_clarity = include_clarity
+        self.save_context = save_context
+        self.context_buffer_km = context_buffer_km
         
         # Create directories
         self.rasters_dir.mkdir(parents=True, exist_ok=True)
@@ -247,6 +251,17 @@ class LakeTempPipeline:
                 except Exception as e:
                     logger.warning(f"  Clarity processing failed: {str(e)[:50]}")
             
+            # Save context raster (buffered area around lake) if enabled
+            if self.save_context:
+                try:
+                    context_meta = self._save_context_raster(
+                        item, lake_polygon, scene_date, scene_id, output_dir, safe_lake_name
+                    )
+                    if context_meta:
+                        metadata.update(context_meta)
+                except Exception as e:
+                    logger.warning(f"  Context raster failed: {str(e)[:50]}")
+            
             logger.info(
                 f"  ✓ {scene_date}: {metadata['temp_mean_c']:.1f}°C "
                 f"(range: {metadata['temp_min_c']:.1f} - {metadata['temp_max_c']:.1f})"
@@ -320,6 +335,84 @@ class LakeTempPipeline:
             "secchi_mean_m": round(float(np.nanmean(valid_secchi)), 2),
             "secchi_std_m": round(float(np.nanstd(valid_secchi)), 2),
         }
+    
+    def _save_context_raster(
+        self,
+        item,
+        lake_polygon: gpd.GeoDataFrame,
+        scene_date: str,
+        scene_id: str,
+        output_dir: Path,
+        safe_lake_name: str,
+    ) -> Optional[dict]:
+        """
+        Save a buffered context raster around the lake (includes surrounding area).
+        
+        Returns metadata dict with context file path.
+        """
+        context_file = output_dir / f"{safe_lake_name}_{scene_date}_context.tif"
+        
+        # Skip if already exists
+        if context_file.exists():
+            return {"context_file": str(context_file)}
+        
+        # Load thermal band
+        lwir = rioxarray.open_rasterio(item.assets[THERMAL_BAND].href)
+        
+        # Get lake bounds and add buffer (convert km to degrees, ~0.01 deg ≈ 1km)
+        buffer_deg = self.context_buffer_km * 0.01
+        bounds = lake_polygon.total_bounds  # [minx, miny, maxx, maxy]
+        buffered_bounds = [
+            bounds[0] - buffer_deg,
+            bounds[1] - buffer_deg,
+            bounds[2] + buffer_deg,
+            bounds[3] + buffer_deg,
+        ]
+        
+        # Reproject bounds to raster CRS
+        from shapely.geometry import box
+        from pyproj import Transformer
+        
+        # Create transformer from WGS84 to raster CRS
+        transformer = Transformer.from_crs("EPSG:4326", lwir.rio.crs, always_xy=True)
+        
+        # Transform the buffered bounds
+        min_x, min_y = transformer.transform(buffered_bounds[0], buffered_bounds[1])
+        max_x, max_y = transformer.transform(buffered_bounds[2], buffered_bounds[3])
+        
+        # Clip to buffered bounding box
+        try:
+            context_clip = lwir.rio.clip_box(min_x, min_y, max_x, max_y)
+        except Exception:
+            # If clip_box fails, try with original bounds
+            context_clip = lwir
+        
+        # Convert to Celsius
+        temp_kelvin = context_clip.astype(np.float32) * SCALE_FACTOR + OFFSET
+        temp_celsius = temp_kelvin - 273.15
+        
+        # Set nodata for invalid temps
+        temp_celsius = temp_celsius.where(
+            (temp_celsius > -20) & (temp_celsius < 45),
+            other=np.nan
+        )
+        
+        # Update attributes
+        temp_celsius.attrs["units"] = "celsius"
+        temp_celsius.attrs["long_name"] = "Lake Surface Temperature (Context)"
+        temp_celsius.attrs["source"] = scene_id
+        temp_celsius.attrs["date"] = scene_date
+        temp_celsius.rio.write_nodata(np.nan, inplace=True)
+        
+        # Save as GeoTIFF
+        temp_celsius.rio.to_raster(
+            context_file,
+            driver="GTiff",
+            compress="LZW",
+            tiled=True,
+        )
+        
+        return {"context_file": str(context_file)}
     
     def process_lake(
         self,
@@ -452,6 +545,10 @@ def main():
     parser.add_argument("--end-date", help="End date (YYYY-MM-DD), default: today")
     parser.add_argument("--include-clarity", action="store_true", 
                         help="Also generate water clarity (Secchi depth) rasters")
+    parser.add_argument("--save-context", action="store_true",
+                        help="Save buffered context rasters (lake + surrounding area)")
+    parser.add_argument("--context-buffer", type=float, default=5.0,
+                        help="Buffer distance in km for context rasters (default: 5)")
     
     args = parser.parse_args()
     
@@ -467,6 +564,8 @@ def main():
         lakes_dir=args.lakes_dir,
         rasters_dir=args.rasters_dir,
         include_clarity=args.include_clarity,
+        save_context=args.save_context,
+        context_buffer_km=args.context_buffer,
     )
     pipeline.run(start_date=start_date, end_date=end_date, max_scenes_per_lake=args.max_scenes)
 

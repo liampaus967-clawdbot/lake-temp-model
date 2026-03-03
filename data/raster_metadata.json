@@ -4,19 +4,280 @@
       "scenes": []
     },
     "Harriman Reservoir": {
-      "scenes": []
+      "scenes": [
+        {
+          "scene_id": "LC08_L2SP_013030_20250729_02_T1",
+          "date": "2025-07-29",
+          "cloud_cover": 9.27,
+          "file": "data/rasters/harriman_reservoir/harriman_reservoir_2025-07-29.tif",
+          "temp_min_c": 11.671844482421875,
+          "temp_max_c": 30.976837158203125,
+          "temp_mean_c": 21.678123474121094,
+          "temp_std_c": 2.2333831787109375,
+          "valid_pixels": 8885,
+          "processed_at": "2026-03-03T17:30:37.762941",
+          "context_file": "data/rasters/harriman_reservoir/harriman_reservoir_2025-07-29_context.tif"
+        },
+        {
+          "scene_id": "LC09_L2SP_013030_20250619_02_T1",
+          "date": "2025-06-19",
+          "cloud_cover": 20.05,
+          "file": "data/rasters/harriman_reservoir/harriman_reservoir_2025-06-19.tif",
+          "temp_min_c": 18.374603271484375,
+          "temp_max_c": 30.874298095703125,
+          "temp_mean_c": 23.041051864624023,
+          "temp_std_c": 1.4592701196670532,
+          "valid_pixels": 8885,
+          "processed_at": "2026-03-02T20:46:31.117170",
+          "clarity_file": "data/rasters/harriman_reservoir/harriman_reservoir_2025-06-19_clarity.tif",
+          "secchi_min_m": 0.10000000149011612,
+          "secchi_max_m": 8.050984382629395,
+          "secchi_mean_m": 2.26,
+          "secchi_std_m": 1.07
+        },
+        {
+          "scene_id": "LC09_L2SP_013030_20250603_02_T1",
+          "date": "2025-06-03",
+          "cloud_cover": 0.01,
+          "file": "data/rasters/harriman_reservoir/harriman_reservoir_2025-06-03.tif",
+          "temp_min_c": 15.031768798828125,
+          "temp_max_c": 24.18182373046875,
+          "temp_mean_c": 16.929882049560547,
+          "temp_std_c": 1.1005889177322388,
+          "valid_pixels": 8885,
+          "processed_at": "2026-03-02T20:43:12.121480",
+          "clarity_file": "data/rasters/harriman_reservoir/harriman_reservoir_2025-06-03_clarity.tif",
+          "secchi_min_m": 0.10000000149011612,
+          "secchi_max_m": 6.6401262283325195,
+          "secchi_mean_m": 1.76,
+          "secchi_std_m": 0.88
+        }
+      ]
     },
     "Somerset Reservoir": {
-      "scenes": []
+      "scenes": [
+        {
+          "scene_id": "LC08_L2SP_013030_20250729_02_T1",
+          "date": "2025-07-29",
+          "cloud_cover": 9.27,
+          "file": "data/rasters/somerset_reservoir/somerset_reservoir_2025-07-29.tif",
+          "temp_min_c": 22.537750244140625,
+          "temp_max_c": 28.252685546875,
+          "temp_mean_c": 24.382665634155273,
+          "temp_std_c": 0.9365975856781006,
+          "valid_pixels": 6928,
+          "processed_at": "2026-03-03T17:30:46.499391",
+          "context_file": "data/rasters/somerset_reservoir/somerset_reservoir_2025-07-29_context.tif"
+        },
+        {
+          "scene_id": "LC09_L2SP_013030_20250619_02_T1",
+          "date": "2025-06-19",
+          "cloud_cover": 20.05,
+          "file": "data/rasters/somerset_reservoir/somerset_reservoir_2025-06-19.tif",
+          "temp_min_c": 18.832611083984375,
+          "temp_max_c": 27.791229248046875,
+          "temp_mean_c": 21.342573165893555,
+          "temp_std_c": 1.7529958486557007,
+          "valid_pixels": 6928,
+          "processed_at": "2026-03-02T20:46:59.640711",
+          "clarity_file": "data/rasters/somerset_reservoir/somerset_reservoir_2025-06-19_clarity.tif",
+          "secchi_min_m": 0.10000000149011612,
+          "secchi_max_m": 4.8634514808654785,
+          "secchi_mean_m": 2.57,
+          "secchi_std_m": 1.0
+        },
+        {
+          "scene_id": "LC09_L2SP_013030_20250603_02_T1",
+          "date": "2025-06-03",
+          "cloud_cover": 0.01,
+          "file": "data/rasters/somerset_reservoir/somerset_reservoir_2025-06-03.tif",
+          "temp_min_c": 13.886749267578125,
+          "temp_max_c": 21.129547119140625,
+          "temp_mean_c": 15.380721092224121,
+          "temp_std_c": 1.2714530229568481,
+          "valid_pixels": 6928,
+          "processed_at": "2026-03-02T20:43:38.596211",
+          "clarity_file": "data/rasters/somerset_reservoir/somerset_reservoir_2025-06-03_clarity.tif",
+          "secchi_min_m": 0.10000000149011612,
+          "secchi_max_m": 4.6548027992248535,
+          "secchi_mean_m": 1.7,
+          "secchi_std_m": 0.76
+        }
+      ]
     },
     "Lake Bomoseen": {
-      "scenes": []
+      "scenes": [
+        {
+          "scene_id": "LC08_L2SP_013030_20250729_02_T1",
+          "date": "2025-07-29",
+          "cloud_cover": 9.27,
+          "file": "data/rasters/lake_bomoseen/lake_bomoseen_2025-07-29.tif",
+          "temp_min_c": 11.121551513671875,
+          "temp_max_c": 33.899261474609375,
+          "temp_mean_c": 22.886980056762695,
+          "temp_std_c": 6.233870029449463,
+          "valid_pixels": 10740,
+          "processed_at": "2026-03-03T17:30:55.581687",
+          "context_file": "data/rasters/lake_bomoseen/lake_bomoseen_2025-07-29_context.tif"
+        },
+        {
+          "scene_id": "LC09_L2SP_014029_20250712_02_T1",
+          "date": "2025-07-12",
+          "cloud_cover": 19.64,
+          "file": "data/rasters/lake_bomoseen/lake_bomoseen_2025-07-12.tif",
+          "temp_min_c": 25.234588623046875,
+          "temp_max_c": 32.61749267578125,
+          "temp_mean_c": 27.954030990600586,
+          "temp_std_c": 2.3223958015441895,
+          "valid_pixels": 4602,
+          "processed_at": "2026-03-02T20:50:34.332315",
+          "clarity_file": "data/rasters/lake_bomoseen/lake_bomoseen_2025-07-12_clarity.tif",
+          "secchi_min_m": 0.10000000149011612,
+          "secchi_max_m": 3.9525184631347656,
+          "secchi_mean_m": 0.77,
+          "secchi_std_m": 0.59
+        },
+        {
+          "scene_id": "LC09_L2SP_013030_20250619_02_T1",
+          "date": "2025-06-19",
+          "cloud_cover": 20.05,
+          "file": "data/rasters/lake_bomoseen/lake_bomoseen_2025-06-19.tif",
+          "temp_min_c": 15.831573486328125,
+          "temp_max_c": 36.100433349609375,
+          "temp_mean_c": 22.89352035522461,
+          "temp_std_c": 3.7676782608032227,
+          "valid_pixels": 10740,
+          "processed_at": "2026-03-02T20:47:25.902418",
+          "clarity_file": "data/rasters/lake_bomoseen/lake_bomoseen_2025-06-19_clarity.tif",
+          "secchi_min_m": 0.10000000149011612,
+          "secchi_max_m": 15.0,
+          "secchi_mean_m": 1.4,
+          "secchi_std_m": 1.37
+        },
+        {
+          "scene_id": "LC09_L2SP_013030_20250603_02_T1",
+          "date": "2025-06-03",
+          "cloud_cover": 0.01,
+          "file": "data/rasters/lake_bomoseen/lake_bomoseen_2025-06-03.tif",
+          "temp_min_c": 17.373138427734375,
+          "temp_max_c": 31.721954345703125,
+          "temp_mean_c": 19.335905075073242,
+          "temp_std_c": 2.0827605724334717,
+          "valid_pixels": 10740,
+          "processed_at": "2026-03-02T20:44:02.235537",
+          "clarity_file": "data/rasters/lake_bomoseen/lake_bomoseen_2025-06-03_clarity.tif",
+          "secchi_min_m": 0.10000000149011612,
+          "secchi_max_m": 4.361320972442627,
+          "secchi_mean_m": 1.1,
+          "secchi_std_m": 0.82
+        }
+      ]
     },
     "Caspian Lake": {
-      "scenes": []
+      "scenes": [
+        {
+          "scene_id": "LC09_L2SP_014029_20250728_02_T1",
+          "date": "2025-07-28",
+          "cloud_cover": 6.64,
+          "file": "data/rasters/caspian_lake/caspian_lake_2025-07-28.tif",
+          "temp_min_c": 18.241302490234375,
+          "temp_max_c": 23.088043212890625,
+          "temp_mean_c": 19.33692741394043,
+          "temp_std_c": 0.7025288343429565,
+          "valid_pixels": 3562,
+          "processed_at": "2026-03-03T17:31:06.177251",
+          "context_file": "data/rasters/caspian_lake/caspian_lake_2025-07-28_context.tif"
+        },
+        {
+          "scene_id": "LC09_L2SP_014029_20250712_02_T1",
+          "date": "2025-07-12",
+          "cloud_cover": 19.64,
+          "file": "data/rasters/caspian_lake/caspian_lake_2025-07-12.tif",
+          "temp_min_c": 20.5689697265625,
+          "temp_max_c": 28.242431640625,
+          "temp_mean_c": 23.759119033813477,
+          "temp_std_c": 0.818400502204895,
+          "valid_pixels": 3562,
+          "processed_at": "2026-03-02T20:51:04.034631",
+          "clarity_file": "data/rasters/caspian_lake/caspian_lake_2025-07-12_clarity.tif",
+          "secchi_min_m": 0.10000000149011612,
+          "secchi_max_m": 3.946117401123047,
+          "secchi_mean_m": 1.87,
+          "secchi_std_m": 0.69
+        },
+        {
+          "scene_id": "LC08_L2SP_013029_20250627_02_T1",
+          "date": "2025-06-27",
+          "cloud_cover": 14.24,
+          "file": "data/rasters/caspian_lake/caspian_lake_2025-06-27.tif",
+          "temp_min_c": 21.580718994140625,
+          "temp_max_c": 25.966033935546875,
+          "temp_mean_c": 22.249404907226562,
+          "temp_std_c": 0.5660452842712402,
+          "valid_pixels": 3566,
+          "processed_at": "2026-03-02T20:48:44.700589",
+          "clarity_file": "data/rasters/caspian_lake/caspian_lake_2025-06-27_clarity.tif",
+          "secchi_min_m": 0.10000000149011612,
+          "secchi_max_m": 4.420602798461914,
+          "secchi_mean_m": 1.65,
+          "secchi_std_m": 0.92
+        },
+        {
+          "scene_id": "LC09_L2SP_013029_20250603_02_T1",
+          "date": "2025-06-03",
+          "cloud_cover": 0.44,
+          "file": "data/rasters/caspian_lake/caspian_lake_2025-06-03.tif",
+          "temp_min_c": 3.119964599609375,
+          "temp_max_c": 14.378936767578125,
+          "temp_mean_c": 6.6194682121276855,
+          "temp_std_c": 2.0998764038085938,
+          "valid_pixels": 3566,
+          "processed_at": "2026-03-02T20:44:26.953646",
+          "clarity_file": "data/rasters/caspian_lake/caspian_lake_2025-06-03_clarity.tif",
+          "secchi_min_m": 0.32218271493911743,
+          "secchi_max_m": 2.0719120502471924,
+          "secchi_mean_m": 1.07,
+          "secchi_std_m": 0.23
+        }
+      ]
     },
     "Lake Willoughby": {
-      "scenes": []
+      "scenes": [
+        {
+          "scene_id": "LC08_L2SP_013029_20250627_02_T1",
+          "date": "2025-06-27",
+          "cloud_cover": 14.24,
+          "file": "data/rasters/lake_willoughby/lake_willoughby_2025-06-27.tif",
+          "temp_min_c": 5.717681884765625,
+          "temp_max_c": 25.675506591796875,
+          "temp_mean_c": 13.024487495422363,
+          "temp_std_c": 3.049286127090454,
+          "valid_pixels": 7837,
+          "processed_at": "2026-03-02T20:49:12.639513",
+          "clarity_file": "data/rasters/lake_willoughby/lake_willoughby_2025-06-27_clarity.tif",
+          "secchi_min_m": 0.10000000149011612,
+          "secchi_max_m": 6.753636837005615,
+          "secchi_mean_m": 1.22,
+          "secchi_std_m": 0.57
+        },
+        {
+          "scene_id": "LC09_L2SP_013029_20250603_02_T1",
+          "date": "2025-06-03",
+          "cloud_cover": 0.44,
+          "file": "data/rasters/lake_willoughby/lake_willoughby_2025-06-03.tif",
+          "temp_min_c": 9.234832763671875,
+          "temp_max_c": 20.8765869140625,
+          "temp_mean_c": 10.672831535339355,
+          "temp_std_c": 1.7015883922576904,
+          "valid_pixels": 7837,
+          "processed_at": "2026-03-02T20:44:55.071055",
+          "clarity_file": "data/rasters/lake_willoughby/lake_willoughby_2025-06-03_clarity.tif",
+          "secchi_min_m": 0.10000000149011612,
+          "secchi_max_m": 3.687011957168579,
+          "secchi_mean_m": 1.83,
+          "secchi_std_m": 0.95
+        }
+      ]
     },
     "Lake Champlain": {
       "scenes": [
@@ -30,29 +291,59 @@
           "temp_mean_c": 26.53548240661621,
           "temp_std_c": 5.401543617248535,
           "valid_pixels": 12037,
-          "processed_at": "2026-03-02T20:37:01.686438",
-          "clarity_file": "data/rasters/lake_champlain/lake_champlain_2025-07-29_clarity.tif",
-          "secchi_min_m": 0.10000000149011612,
-          "secchi_max_m": 15.0,
-          "secchi_mean_m": 1.4,
-          "secchi_std_m": 1.43
+          "processed_at": "2026-03-03T17:31:18.011241",
+          "context_file": "data/rasters/lake_champlain/lake_champlain_2025-07-29_context.tif"
         },
         {
-          "scene_id": "LC09_L2SP_014030_20250728_02_T1",
-          "date": "2025-07-28",
-          "cloud_cover": 14.8,
-          "file": "data/rasters/lake_champlain/lake_champlain_2025-07-28.tif",
-          "temp_min_c": 19.263275146484375,
-          "temp_max_c": 31.482696533203125,
-          "temp_mean_c": 25.801576614379883,
-          "temp_std_c": 0.941634476184845,
-          "valid_pixels": 45296,
-          "processed_at": "2026-03-02T20:37:28.875580",
-          "clarity_file": "data/rasters/lake_champlain/lake_champlain_2025-07-28_clarity.tif",
+          "scene_id": "LC09_L2SP_014029_20250712_02_T1",
+          "date": "2025-07-12",
+          "cloud_cover": 19.64,
+          "file": "data/rasters/lake_champlain/lake_champlain_2025-07-12.tif",
+          "temp_min_c": 10.000457763671875,
+          "temp_max_c": 38.356353759765625,
+          "temp_mean_c": 23.758689880371094,
+          "temp_std_c": 1.904989242553711,
+          "valid_pixels": 1241676,
+          "processed_at": "2026-03-02T20:51:34.398725",
+          "clarity_file": "data/rasters/lake_champlain/lake_champlain_2025-07-12_clarity.tif",
           "secchi_min_m": 0.10000000149011612,
-          "secchi_max_m": 3.3919930458068848,
-          "secchi_mean_m": 0.96,
-          "secchi_std_m": 0.48
+          "secchi_max_m": 15.0,
+          "secchi_mean_m": 1.7,
+          "secchi_std_m": 1.34
+        },
+        {
+          "scene_id": "LC09_L2SP_013030_20250619_02_T1",
+          "date": "2025-06-19",
+          "cloud_cover": 20.05,
+          "file": "data/rasters/lake_champlain/lake_champlain_2025-06-19.tif",
+          "temp_min_c": 16.68267822265625,
+          "temp_max_c": 34.285491943359375,
+          "temp_mean_c": 25.000865936279297,
+          "temp_std_c": 2.1383588314056396,
+          "valid_pixels": 15812,
+          "processed_at": "2026-03-02T20:47:49.822018",
+          "clarity_file": "data/rasters/lake_champlain/lake_champlain_2025-06-19_clarity.tif",
+          "secchi_min_m": 0.10000000149011612,
+          "secchi_max_m": 8.691594123840332,
+          "secchi_mean_m": 1.02,
+          "secchi_std_m": 0.66
+        },
+        {
+          "scene_id": "LC09_L2SP_013030_20250603_02_T1",
+          "date": "2025-06-03",
+          "cloud_cover": 0.01,
+          "file": "data/rasters/lake_champlain/lake_champlain_2025-06-03.tif",
+          "temp_min_c": 17.390228271484375,
+          "temp_max_c": 27.692108154296875,
+          "temp_mean_c": 18.925519943237305,
+          "temp_std_c": 1.143625020980835,
+          "valid_pixels": 13440,
+          "processed_at": "2026-03-02T20:45:23.650041",
+          "clarity_file": "data/rasters/lake_champlain/lake_champlain_2025-06-03_clarity.tif",
+          "secchi_min_m": 0.10000000149011612,
+          "secchi_max_m": 2.1179544925689697,
+          "secchi_mean_m": 1.12,
+          "secchi_std_m": 0.42
         }
       ]
     },
@@ -68,15 +359,62 @@
           "temp_mean_c": 19.2982177734375,
           "temp_std_c": 2.044715404510498,
           "valid_pixels": 2596,
-          "processed_at": "2026-03-02T20:37:55.139433",
-          "clarity_file": "data/rasters/green_river_reservoir/green_river_reservoir_2025-07-28_clarity.tif",
+          "processed_at": "2026-03-03T17:31:28.794749",
+          "context_file": "data/rasters/green_river_reservoir/green_river_reservoir_2025-07-28_context.tif"
+        },
+        {
+          "scene_id": "LC09_L2SP_014029_20250712_02_T1",
+          "date": "2025-07-12",
+          "cloud_cover": 19.64,
+          "file": "data/rasters/green_river_reservoir/green_river_reservoir_2025-07-12.tif",
+          "temp_min_c": 9.569793701171875,
+          "temp_max_c": 26.304412841796875,
+          "temp_mean_c": 23.4876766204834,
+          "temp_std_c": 2.495584011077881,
+          "valid_pixels": 2596,
+          "processed_at": "2026-03-02T20:52:04.941632",
+          "clarity_file": "data/rasters/green_river_reservoir/green_river_reservoir_2025-07-12_clarity.tif",
           "secchi_min_m": 0.10000000149011612,
-          "secchi_max_m": 4.0277419090271,
-          "secchi_mean_m": 0.85,
+          "secchi_max_m": 7.31587553024292,
+          "secchi_mean_m": 1.24,
+          "secchi_std_m": 1.0
+        },
+        {
+          "scene_id": "LC08_L2SP_013029_20250627_02_T1",
+          "date": "2025-06-27",
+          "cloud_cover": 14.24,
+          "file": "data/rasters/green_river_reservoir/green_river_reservoir_2025-06-27.tif",
+          "temp_min_c": 21.902008056640625,
+          "temp_max_c": 25.658416748046875,
+          "temp_mean_c": 23.323286056518555,
+          "temp_std_c": 0.4543251693248749,
+          "valid_pixels": 2595,
+          "processed_at": "2026-03-02T20:49:45.535394",
+          "clarity_file": "data/rasters/green_river_reservoir/green_river_reservoir_2025-06-27_clarity.tif",
+          "secchi_min_m": 0.10000000149011612,
+          "secchi_max_m": 6.743352890014648,
+          "secchi_mean_m": 2.97,
+          "secchi_std_m": 1.11
+        },
+        {
+          "scene_id": "LC09_L2SP_013029_20250603_02_T1",
+          "date": "2025-06-03",
+          "cloud_cover": 0.44,
+          "file": "data/rasters/green_river_reservoir/green_river_reservoir_2025-06-03.tif",
+          "temp_min_c": 14.252471923828125,
+          "temp_max_c": 20.7979736328125,
+          "temp_mean_c": 16.222949981689453,
+          "temp_std_c": 1.3262053728103638,
+          "valid_pixels": 2595,
+          "processed_at": "2026-03-02T20:45:50.600652",
+          "clarity_file": "data/rasters/green_river_reservoir/green_river_reservoir_2025-06-03_clarity.tif",
+          "secchi_min_m": 0.10000000149011612,
+          "secchi_max_m": 4.371750354766846,
+          "secchi_mean_m": 2.65,
           "secchi_std_m": 0.81
         }
       ]
     }
   },
-  "last_run": "2026-03-02T20:38:12.648415"
+  "last_run": "2026-03-03T17:31:29.451892"
 }
